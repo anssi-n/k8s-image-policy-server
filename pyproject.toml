@@ -1,0 +1,13 @@
+[project]
+name = "k8simagepolicyserver"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.116.2",
+    "pyyaml>=6.0.2",
+    "types-pyyaml>=6.0.12.20250915",
+    "uvicorn>=0.35.0",
+    "watchdog>=6.0.0",
+]
