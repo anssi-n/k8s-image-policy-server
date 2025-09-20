@@ -43,4 +43,4 @@ class  ConfigHandler(FileSystemEventHandler):
 
 config_handler = ConfigHandler(repo_whitelist)
 observer = Observer()
-observer.schedule(config_handler,  path=repo_whitelist,  recursive=False)
+observer.schedule(config_handler,  path=repo_whitelist,  recursive=True)

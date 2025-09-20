@@ -9,7 +9,7 @@ app = FastAPI()
 
 @app.get("/health")
 async def health(request: Request):
-    logger.info(f"Heal endpoint pinged from {request.client.host if request.client else None}")
+    logger.info(f"Health endpoint pinged from {request.client.host if request.client else None}")
     return {"status": "healthy"}
 
 @app.post("/policy")
@@ -24,7 +24,7 @@ async def verify_images(request: ImageReviewRequest) -> ImageReviewResponse:
     if violating_repos:
         response = ImageReviewResponse(
             apiVersion = request.apiVersion,
-            status=ImageReviewStatus(allowed = False, reason = f"Violating image repositories: {", ".join(list(violating_repos))}")
+            status=ImageReviewStatus(allowed = False, reason = f"Violating image repositories: {", ".join(list(violating_repos))}. Allowed repositories: {", ".join(list(config_handler.valid_repos))}")
         )
     else:
         response = ImageReviewResponse(
