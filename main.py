@@ -1,11 +1,14 @@
 import uvicorn
 from fastapi import FastAPI, Request
 from models import ImageReviewRequest, ImageReviewResponse, ImageReviewStatus
-from config import observer, config_handler
+#from config import observer, config_handler AppConfigHandler
+from config import config_handler
+
 from app_logger import logger
 import os
 
 app = FastAPI()
+
 
 @app.get("/health")
 async def health(request: Request):
@@ -35,7 +38,6 @@ async def verify_images(request: ImageReviewRequest) -> ImageReviewResponse:
     return response
 
 if __name__ == "__main__":
-    observer.start()
     ssl_cert_file = os.environ.get("SSL_CERTFILE",None)
     ssl_key_file = os.environ.get("SSL_KEYFILE",None)
     if not ssl_cert_file or not ssl_key_file:
