@@ -21,12 +21,12 @@ def read_config(repo_whitelist: Path):
         logger.critical(f"{repo_whitelist} not a valid yaml file.")
         exit(1)
 
-    if  "valid_repositories" not in config_data:
-        logger.critical(f"valid_repositories not found in yaml conifg: {config_data}.")
+    if  "whitelisted_repositories" not in config_data:
+        logger.critical(f"whitelisted_repositories not found in yaml conifg: {config_data}.")
         exit(1)
 
-    valid_repos = set(config_data["valid_repositories"])
-    logger.info(f"Configured valid image repositories: {valid_repos}")
+    valid_repos = set(config_data["whitelisted_repositories"])
+    logger.info(f"Configured whitelisted image repositories: {valid_repos}")
     return valid_repos
 
 

@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: imagepolicywebhook
+  name: imagepolicywebhook
+  namespace: imagepolicywebhook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: imagepolicywebhook
+  template:
+    metadata:
+      labels:
+        app: imagepolicywebhook
+    spec:
+      volumes:
+        - name: config-volume
+          configMap:
+            name: policy-config
+        - name: cert
+          secret:
+            secretName: policy-server
+            items:
+              - key: tls.crt
+                path: policy-server.crt
+        - name: key
+          secret:
+            secretName: policy-server
+            items:
+              - key: tls.key
+                path: policy-server.key
+
+      containers:
+        - image: bobfleming/k8s-image-policy-server:v0.0.2
+          name: imagepolicywebhook
+          ports:
+            - containerPort: 443
+
+          env:
+            - name: SSL_CERTFILE
+              value: /etc/ssl/certs/webhook-server.crt
+            - name: SSL_KEYFILE
+              value: /etc/ssl/private/webhook-server.key
+            - name: REPOSITORY_WHITELIST
+              value: /etc/policy-server/config/config.yaml
+
+          volumeMounts:
+            - name: config-volume
+              readOnly: true
+              mountPath: /etc/policy-server/config
+            - name: cert
+              readOnly: true
+              mountPath: /etc/ssl/certs/
+            - name: key
+              readOnly: true
+              mountPath: /etc/ssl/private/
